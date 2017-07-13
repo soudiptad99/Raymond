@@ -848,8 +848,7 @@ function koreBotChat() {
 				var finalleadvalue = finalvalue.replace("<b>","").trim();
 				(function() {
         var f = function() {
-			  alert(finalleadvalue);
-              EF.init({ eventType: "transaction",
+		  EF.init({ eventType: "transaction",
                         transactionProperties : "ev_Lead_PL_Mob="+finalleadvalue+"&ev_transid=<transid>",
                         segment : "", 
                         searchSegment : "",
