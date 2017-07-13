@@ -799,9 +799,9 @@ function koreBotChat() {
             _chatContainer.find('.kore-chat-header .disabled').prop('disabled',false).removeClass("disabled");
             _chatInput.focus();
 			(function() {
-		       var f = function() {
-
-              EF.init({ eventType: "transaction",
+		console.log("Calling script for initilization adobe");
+				var f = function() {
+		              EF.init({ eventType: "transaction",
                         transactionProperties : "ev_PL_Mob_PV=<PL_Mob_PV>&ev_transid=<transid>",
                         segment : "", 
                         searchSegment : "",
@@ -835,6 +835,7 @@ function koreBotChat() {
                 $('.kore-auth-popup .close-popup').trigger("click");
             }
 			var tempData = JSON.parse(message.data);
+		console.log(JSON.stringify(tempData));
 			 //var tempData = JSON.parse(message.data);
 			if(tempData.type=="bot_response")
 			{   
