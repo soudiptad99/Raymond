@@ -835,7 +835,7 @@ function koreBotChat() {
                 $('.kore-auth-popup .close-popup').trigger("click");
             }
 			var tempData = JSON.parse(message.data);
-		console.log(JSON.stringify(tempData));
+		console.log("Successfully we are getting the values");
 			 //var tempData = JSON.parse(message.data);
 			if(tempData.type=="bot_response")
 			{   
