@@ -527,7 +527,7 @@ function koreBotChat() {
 
         me.config.chatTitle = tempTitle;
         bot.init(me.config.botOptions);
-        me.render(chatWindowHtml);       
+        me.render(chatWindowHtml);   
     };
     chatWindow.prototype.destroy = function () {
         var me = this;
@@ -792,19 +792,94 @@ function koreBotChat() {
             me.resetWindow();
         });
         bot.on("open", function (response) {
+			
             accessToken = me.config.botOptions.accessToken;
             var _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
             _chatContainer.find('.kore-chat-header .header-title').html(me.config.chatTitle).attr('title',me.config.chatTitle);
             _chatContainer.find('.kore-chat-header .disabled').prop('disabled',false).removeClass("disabled");
             _chatInput.focus();
+			(function() {
+		console.log("Calling script for initilization adobe")
+        var f = function() {
+
+              EF.init({ eventType: "transaction",
+                        transactionProperties : "ev_PL_Mob_PV=<PL_Mob_PV>&ev_transid=<transid>",
+                        segment : "", 
+                        searchSegment : "",
+                        sku : "",
+                        userid : "819",
+                        pixelHost : "pixel.everesttech.net"
+                        
+                        , allow3rdPartyPixels: 1});
+              EF.main();
+        };
+        window.EF = window.EF || {}; 
+        if (window.EF.main) {
+            f();
+            return;
+        }
+        window.EF.onloadCallbacks = window.EF.onloadCallbacks || [];
+        window.EF.onloadCallbacks[window.EF.onloadCallbacks.length] = f;
+        if (!window.EF.jsTagAdded) {
+            var efjs = document.createElement('script'); efjs.type = 'text/javascript'; efjs.async = true;
+            efjs.src = 'http://www.everestjs.net/static/st.v3.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(efjs, s);
+            window.EF.jsTagAdded=1;
+        }
+    })();
+
         });
 
         bot.on("message", function (message) {
+			/*Message Script*/
             if(me.popupOpened === true){
                 $('.kore-auth-popup .close-popup').trigger("click");
             }
-            var tempData = JSON.parse(message.data);
+			var tempData = JSON.parse(message.data);
+			console.log(JSON.stringify(tempData));
+            //var tempData = JSON.parse(message.data);
+			if(tempData.type=="bot_response")
+			{   
+				if(tempData.message[0].component.payload.text)
+				{
+					if(tempData.message[0].component.payload.text.indexOf("Thanks so much") != -1)
+				{
+				var leadId= tempData.message[0].component.payload.text;
+				var p = leadId.split(":");
+				var finalvalue = p[1].replace("</b>","");
+				var finalleadvalue = finalvalue.replace("<b>","").trim();
+				(function() {
+        var f = function() {
+			  alert(finalleadvalue);
+              EF.init({ eventType: "transaction",
+                        transactionProperties : "ev_Lead_PL_Mob="+finalleadvalue+"&ev_transid=<transid>",
+                        segment : "", 
+                        searchSegment : "",
+                        sku : "",
+                        userid : "819",
+                        pixelHost : "pixel.everesttech.net"
+                        
+                        , allow3rdPartyPixels: 1});
+              EF.main();
+        };
+        window.EF = window.EF || {}; 
+        if (window.EF.main) {
+            f();
+            return;
+        }
+        window.EF.onloadCallbacks = window.EF.onloadCallbacks || [];
+        window.EF.onloadCallbacks[window.EF.onloadCallbacks.length] = f;
+        if (!window.EF.jsTagAdded) {
+            var efjs = document.createElement('script'); efjs.type = 'text/javascript'; efjs.async = true;
+            efjs.src = 'http://www.everestjs.net/static/st.v3.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(efjs, s);
+            window.EF.jsTagAdded=1;
+        }
+    })();
+				}
 
+			}}
+			
             if (tempData.from === "bot" && tempData.type === "bot_response")
             {	
 				if(tempData.message[0]){
@@ -1502,7 +1577,7 @@ function koreBotChat() {
         // On receving message from server
         _connection.onmessage = function(msg) {
             var data = msg.data;
-            //console.log(data);
+            console.log(data);
             if (data instanceof Object && !(data instanceof Blob)) {
                 console.log('Got object that is not a blob');
             } else if (data instanceof Blob) {
