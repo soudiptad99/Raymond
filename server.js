@@ -25,7 +25,7 @@ var router = express.Router();              // get an instance of the express Ro
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.post('/', function(req, res) {
-  var identity = uuidV1();
+  var identity = soudipta.dutta@kore.com;
   var clientId = req.body.clientId;
   var clientSecret ="lEU427WXdZTV0z0bh4ddMgCwvR5F1BaeOkn698n7NQA=";
 
